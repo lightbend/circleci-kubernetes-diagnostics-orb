@@ -1,2 +1,3 @@
-# circleci-kubernetes-diagnostics-orb
-CircleCI Orb for performing diagnostics on a Kubernetes cluster
+# CircleCI Kubernetes Diagnostics Orb
+
+CircleCI Orb for performing diagnostics on a Kubernetes cluster.

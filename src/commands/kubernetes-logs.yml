@@ -1,0 +1,118 @@
+description: |
+  Displays the logs for the container(s) in one or more pods.
+parameters:
+  all-containers:
+    default: false
+    description: |
+      Whether to show the logs from all containers in the pod(s) (default: false).
+
+      If the pod(s) have more than one container then you must either set this to `true` or set the `container` parameter.
+    type: boolean
+  container:
+    default: ""
+    description: |
+      The container name for which to get the logs for (default: "").
+
+      This parameter is only valid if the `pods` parameter only contains a single pod name or the `pod-template` matches a single pod.
+
+      If the pod has more than one container then you must either set this or set the `all-containers` parameter to `true`.
+    type: string
+  container-instance:
+    default: both
+    description: |
+      Specifies which container instance to log, the current one, the previous one (if it exists), or both (default: both).
+    enum:
+      - current
+      - previous
+      - both
+    type: enum
+  namespace:
+    default: ""
+    description: |
+      The Kubernetes namespace that should be used (default: "", meaning the default namespace).
+    type: string
+  pod-template:
+    default: '{{range $item := .items}}{{range .status.containerStatuses}}{{if not .ready}}{{printf "%s\n" $item.metadata.name}}{{end}}{{end}}{{end}}'
+    description: |
+      The go template which prints a newline separated list of pod names for which get the logs for.
+
+      The default will match any pod which has a container that failed the readiness probe.
+
+      See [http://golang.org/pkg/text/template/#pkg-overview].
+    type: string
+  pods:
+    default: ""
+    description: |
+      A space separated list of pod names for which to get the logs for (default: "").
+    type: string
+  selector:
+    default: ""
+    description: |
+      Selector (label query) to filter on (default: "").
+
+      The format is:
+        selector    = label-query *("," label-query)
+        label-query = label operator value
+        label       = ...
+        operator    = "=" / "==" / "!="
+        value       = ...
+
+      Example: label1=value1,label2!=value2
+    type: string
+  when:
+    default: on_fail
+    description: |
+      Specify when to enable or disable the step. Takes the following values: always, on_success, on_fail (default: on_fail)
+    enum:
+      - always
+      - on_fail
+      - on_success
+    type: enum
+steps:
+  - run:
+      name: Kubernetes pod logs
+      command: |
+        NAMESPACE="<< parameters.namespace >>"
+        if [ -n "${NAMESPACE}" ]; then
+          set -- "$@" "--namespace=${NAMESPACE}"
+        fi
+
+        pod_template='<< parameters.pod-template >>'
+        pods="$(kubectl get pods "$@" -o go-template="${pod_template}" | sort | uniq -u)"
+        IFS=$'\n' pods=($pods)
+        NAMED_PODS="<< parameters.pods >>"
+        if [ -n "${NAMED_PODS}" ]; then
+          IFS=' ' named_pods=(${NAMED_PODS})
+          pods=("${pods[@]}" "${named_pods[@]}")
+        fi
+
+        ALL_CONTAINERS="<< parameters.all-containers >>"
+        if [ -n "${ALL_CONTAINERS}" ]; then
+          set -- "$@" "--all-containers=${ALL_CONTAINERS}"
+        fi
+
+        CONTAINER="<< parameters.container >>"
+        if [ -n "${CONTAINER}" ]; then
+          set -- "$@" "--container=${CONTAINER}"
+        fi
+
+        CONTAINER_INSTANCE="<< parameters.container-instance >>"
+
+        SELECTOR="<< parameters.selector >>"
+        if [ -n "${SELECTOR}" ]; then
+          set -- "$@" "--selector=${SELECTOR}"
+        fi
+
+        for pod in "${pods[@]}"; do
+          if [[ "${CONTAINER_INSTANCE}" =~ current|both ]]; then
+            echo "Logs for all containers in pod ${pod}:"
+            kubectl logs "$@" "${pod}"
+            echo
+          fi
+          if [[ "${CONTAINER_INSTANCE}" =~ previous|both ]]; then
+            echo "Logs for all previous containers in pod ${pod}:"
+            kubectl logs -p "$@" "${pod}"
+            echo
+          fi
+        done
+      when: << parameters.when >>

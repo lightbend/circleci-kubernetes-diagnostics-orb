@@ -1,0 +1,44 @@
+description: |
+  Performs diagnostics on a Kubernetes cluster.
+parameters:
+  minikube:
+    default: true
+    description: |
+      If the cluster is a local Minikube cluster (default: true).
+    type: boolean
+  namespace:
+    default: ""
+    description: |
+      The Kubernetes namespace that should be used (default: "", meaning the default namespace).
+    type: string
+  when:
+    default: on_fail
+    description: |
+      Specify when to enable or disable the step. Takes the following values: always, on_success, on_fail (default: on_fail)
+    enum:
+      - always
+      - on_fail
+      - on_success
+    type: enum
+steps:
+  - when:
+      condition: << parameters.minikube >>
+      steps:
+        - minikube-status:
+            when: << parameters.when >>
+  - kubernetes-namespaces:
+      when: << parameters.when >>
+  - kubernetes-pods:
+      namespace: << parameters.namespace >>
+      when: << parameters.when >>
+  - kubernetes-pods:
+      namespace: << parameters.namespace >>
+      when: << parameters.when >>
+      output: json
+  - kubernetes-events:
+      namespace: << parameters.namespace >>
+      when: << parameters.when >>
+  - kubernetes-logs:
+      all-containers: true
+      namespace: << parameters.namespace >>
+      when: << parameters.when >>

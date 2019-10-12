@@ -1,0 +1,85 @@
+description: |
+  Displays Kubernetes resources.
+parameters:
+  all-namespaces:
+    default: false
+    description: |
+      Whether to show the resources from all namespaces (default: false).
+    type: boolean
+  namespace:
+    default: ""
+    description: |
+      The Kubernetes namespace that should be used (default: "", meaning the default namespace).
+    type: string
+  output:
+    default: ""
+    description: |
+      The output format (default: ""). One of:
+        json|yaml|wide|name|custom-columns=...|custom-columns-file=...|go-template=...|go-template-file=...|jsonpath=...|jsonpath-file=...
+        - custom columns [http://kubernetes.io/docs/user-guide/kubectl-overview/#custom-columns]
+        - golang template [http://golang.org/pkg/text/template/#pkg-overview]
+        - jsonpath template [http://kubernetes.io/docs/user-guide/jsonpath]
+    type: string
+  resource:
+    description: |
+      The kubernetes resource to display. See https://kubernetes.io/docs/reference/kubectl/overview/#resource-types
+    type: string
+  selector:
+    default: ""
+    description: |
+      Selector (label query) to filter on (default: "").
+
+      The format is:
+        selector    = label-query *("," label-query)
+        label-query = label operator value
+        label       = ...
+        operator    = "=" / "==" / "!="
+        value       = ...
+
+      Example: label1=value1,label2!=value2
+    type: string
+  sort-by:
+    default: ""
+    description: |
+      If non-empty, sort list types using this field specification.
+
+      The field specification is expressed as a JSONPath expression (e.g. '{.metadata.name}').
+
+      The field in the API resource specified by this JSONPath expression must be an integer or a string.
+    type: string
+  when:
+    default: always
+    description: |
+      Specify when to enable or disable the step. Takes the following values: always, on_success, on_fail (default: always)
+    enum:
+      - always
+      - on_fail
+      - on_success
+    type: enum
+steps:
+  - run:
+      name: Kubernetes << parameters.resource >>
+      command: |
+        ALL_NAMESPACES="<< parameters.all-namespaces >>"
+        if [ -n "${ALL_NAMESPACES}" ]; then
+          set -- "$@" "--all-namespaces=${ALL_NAMESPACES}"
+        fi
+        NAMESPACE="<< parameters.namespace >>"
+        if [ -n "${NAMESPACE}" ]; then
+          set -- "$@" "--namespace=${NAMESPACE}"
+        fi
+        OUTPUT="<< parameters.output >>"
+        if [ -n "${OUTPUT}" ]; then
+          set -- "$@" "--output=${OUTPUT}"
+        fi
+        RESOURCE="<< parameters.resource"
+        SELECTOR="<< parameters.selector >>"
+        if [ -n "${SELECTOR}" ]; then
+          set -- "$@" "--selector=${SELECTOR}"
+        fi
+        SORT_BY="<< parameters.sort-by >>"
+        if [ -n "${SORT_BY}" ]; then
+          set -- "$@" "--sort-by=${SORT_BY}"
+        fi
+        kubectl get "${RESOURCE}" "$@"
+      when: << parameters.when >>
