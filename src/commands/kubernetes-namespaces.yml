@@ -1,14 +1,26 @@
+---
 description: |
   Displays Kubernetes namespaces.
 parameters:
   output:
     default: ""
     description: |
-      The output format (default: ""). One of:
-        json|yaml|wide|name|custom-columns=...|custom-columns-file=...|go-template=...|go-template-file=...|jsonpath=...|jsonpath-file=...
-        - custom columns [http://kubernetes.io/docs/user-guide/kubectl-overview/#custom-columns]
-        - golang template [http://golang.org/pkg/text/template/#pkg-overview]
-        - jsonpath template [http://kubernetes.io/docs/user-guide/jsonpath]
+      The output format (default: "").
+
+      One of:
+        - json
+        - yaml
+        - wide
+        - name
+        - custom-columns=...
+            http://kubernetes.io/docs/user-guide/kubectl-overview/#custom-columns
+        - custom-columns-file=...
+        - go-template=...
+            http://golang.org/pkg/text/template/#pkg-overview
+        - go-template-file=...
+        - jsonpath=...
+            http://kubernetes.io/docs/user-guide/jsonpath
+        - jsonpath-file=...
     type: string
   selector:
     default: ""
@@ -31,12 +43,14 @@ parameters:
 
       The field specification is expressed as a JSONPath expression (e.g. '{.metadata.name}').
 
-      The field in the API resource specified by this JSONPath expression must be an integer or a string.
+      The field in the API resource specified by this JSONPath expression must be an integer or a
+      string.
     type: string
   when:
     default: on_fail
     description: |
-      Specify when to enable or disable the step. Takes the following values: always, on_success, on_fail (default: on_fail)
+      Specify when to enable or disable the step. Takes the following values: always, on_success,
+      on_fail (default: on_fail)
     enum:
       - always
       - on_fail
