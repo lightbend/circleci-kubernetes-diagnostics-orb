@@ -47,9 +47,29 @@ make validate
 The CI build uses CircleCI and the [circleci/orb-tools orb][orb-tools-orb] to pack and validate this
 Orb. See [orb-tools-orb on GitHub][orb-tools-orb-git] for more details on how this works.
 
-### Releases
+## Release
+
+### Automatic Release
 
 The CI build will automatically publish, tag and promote the Orb depending on what has been changed.
+
+Depending on what was tagged last time we may have to tag the number version ourselves. The build
+will take what we have tagged and release it.
+
+The tag format is:
+  tag    = name "-" type "-" branch "-" 7*HEXDIGIT
+  name   = ...
+  type   = "major" | "minor" | "patch" | "skip"
+  branch = ...
+
+For example:
+
+```bash
+git tag master-minor-master-f0f6e12 --name-status
+git push origin
+```
+
+### Manual Release
 
 You can publish the Orb manually:
 
