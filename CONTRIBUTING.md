@@ -65,7 +65,7 @@ The tag format is:
 For example:
 
 ```bash
-git tag master-minor-master-f0f6e12 --name-status
+git tag master-minor-master-f0f6e12
 git push origin
 ```
 
