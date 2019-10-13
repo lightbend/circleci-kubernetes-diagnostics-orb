@@ -5,17 +5,19 @@ parameters:
   all-namespaces:
     default: false
     description: |
-      Whether to show the pods from all namespaces (default: false).
+      Whether to show the pods from all namespaces.
     type: boolean
   namespace:
     default: ""
     description: |
-      The Kubernetes namespace that should be used (default: "", meaning the default namespace).
+      The Kubernetes namespace that should be used.
+
+      An empty value will use the default namespace.
     type: string
   output:
     default: "wide"
     description: |
-      The output format (default: "wide").
+      The output format.
 
       One of:
         - json
@@ -35,7 +37,7 @@ parameters:
   selector:
     default: ""
     description: |
-      Selector (label query) to filter on (default: "").
+      Selector (label query) to filter on.
 
       The format is:
         selector    = label-query *("," label-query)
@@ -49,7 +51,7 @@ parameters:
   sort-by:
     default: "{.metadata.name}"
     description: |
-      If non-empty, sort events using this field specification (default: '{.metadata.name}').
+      If non-empty, sort events using this field specification.
 
       The field specification is expressed as a JSONPath expression.
 
@@ -60,7 +62,7 @@ parameters:
     default: on_fail
     description: |
       Specify when to enable or disable the step. Takes the following values: always, on_success,
-      on_fail (default: on_fail)
+      on_fail.
     enum:
       - always
       - on_fail

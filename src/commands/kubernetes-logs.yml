@@ -5,7 +5,7 @@ parameters:
   all-containers:
     default: false
     description: |
-      Whether to show the logs from all containers in the pod(s) (default: false).
+      Whether to show the logs from all containers in the pod(s).
 
       If the pod(s) have more than one container then you must either set this to `true` or set the
       `container` parameter.
@@ -13,7 +13,7 @@ parameters:
   container:
     default: ""
     description: |
-      The container name for which to get the logs for (default: "").
+      The container name for which to get the logs for.
 
       This parameter is only valid if the `pods` parameter only contains a single pod name or the
       `pod-template` matches a single pod.
@@ -25,7 +25,7 @@ parameters:
     default: both
     description: |
       Specifies which container instance to log, the current one, the previous one (if it exists),
-      or both (default: both).
+      or both.
     enum:
       - current
       - previous
@@ -34,7 +34,9 @@ parameters:
   namespace:
     default: ""
     description: |
-      The Kubernetes namespace that should be used (default: "", meaning the default namespace).
+      The Kubernetes namespace that should be used.
+
+      An empty value will use the default namespace.
     type: string
   pod-template:
     default: '
@@ -55,12 +57,12 @@ parameters:
   pods:
     default: ""
     description: |
-      A space separated list of pod names for which to get the logs for (default: "").
+      A space separated list of pod names for which to get the logs for.
     type: string
   selector:
     default: ""
     description: |
-      Selector (label query) to filter on (default: "").
+      Selector (label query) to filter on.
 
       The format is:
         selector    = label-query *("," label-query)
@@ -75,7 +77,7 @@ parameters:
     default: on_fail
     description: |
       Specify when to enable or disable the step. Takes the following values: always, on_success,
-      on_fail (default: on_fail)
+      on_fail.
     enum:
       - always
       - on_fail

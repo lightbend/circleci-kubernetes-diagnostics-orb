@@ -5,18 +5,20 @@ parameters:
   minikube:
     default: true
     description: |
-      If the cluster is a local Minikube cluster (default: true).
+      If the cluster is a local Minikube cluster.
     type: boolean
   namespace:
     default: ""
     description: |
-      The Kubernetes namespace that should be used (default: "", meaning the default namespace).
+      The Kubernetes namespace that should be used.
+
+      An empty value will use the default namespace.
     type: string
   when:
     default: on_fail
     description: |
       Specify when to enable or disable the step. Takes the following values: always, on_success,
-      on_fail (default: on_fail)
+      on_fail.
     enum:
       - always
       - on_fail
