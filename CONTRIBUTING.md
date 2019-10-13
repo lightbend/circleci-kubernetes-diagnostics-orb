@@ -45,14 +45,30 @@ make validate
 ## CI
 
 The CI build uses CircleCI and the [circleci/orb-tools orb][orb-tools-orb] to pack and validate this
-Orb.
+Orb. See [orb-tools-orb on GitHub][orb-tools-orb-git] for more details on how this works.
 
-## Releases
+### Releases
 
-TODO
+The CI build will automatically publish, tag and promote the Orb depending on what has been changed.
+
+You can publish the Orb manually:
+
+```bash
+make publish
+version = dev:alpha
+```
+
+Then promote it:
+
+```bash
+make promote
+version = dev:alpha
+segment (major|minor|patch) = patch
+```
 
 [install-circle-cli]: https://circleci.com/docs/2.0/orb-author-cli/#install-the-cli-for-the-first-time
 [install-yaml-lint]: https://yamllint.readthedocs.io/en/stable/quickstart.html#installing-yamllint
 [orb-tools-orb]: https://circleci.com/orbs/registry/orb/circleci/orb-tools
+[orb-tools-orb-git]: https://github.com/CircleCI-Public/orb-tools-orb
 [packing-a-config]: https://circleci.com/docs/2.0/creating-orbs/#packing-a-config
 [setup-circle-cli]: https://circleci.com/docs/2.0/orb-author-cli/#configure-the-circleci-cli
