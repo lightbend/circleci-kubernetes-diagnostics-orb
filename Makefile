@@ -1,5 +1,7 @@
-orb = target/orb.yml
+
 src = src
+target = target
+orb = $(target)/orb.yml
 
 .PHONY: build
 build: lint validate
@@ -9,6 +11,7 @@ lint:
 	yamllint --strict $(src)
 
 $(orb): $(shell find $(src))
+	mkdir -p $(target)
 	circleci config pack $(src) > $@
 
 .PHONY: pack
