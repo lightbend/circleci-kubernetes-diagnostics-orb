@@ -34,6 +34,7 @@ workflows:
           orb-name: lightbend/kubernetes-diagnostics
           requires:
             - integration-tests-master
+          ssh-fingerprints: ca:c1:0e:8d:9c:fc:df:aa:c2:34:67:ba:ac:8c:0e:62
       - orb-tools/dev-promote-prod:
           filters:
             branches:
@@ -45,6 +46,7 @@ workflows:
           release: minor
           requires:
             - integration-tests-master
+          ssh-fingerprints: ca:c1:0e:8d:9c:fc:df:aa:c2:34:67:ba:ac:8c:0e:62
       - orb-tools/dev-promote-prod:
           filters:
             branches:
@@ -56,6 +58,7 @@ workflows:
           release: major
           requires:
             - integration-tests-master
+          ssh-fingerprints: ca:c1:0e:8d:9c:fc:df:aa:c2:34:67:ba:ac:8c:0e:62
   publish-dev:
     jobs:
       - orb-tools/lint:
