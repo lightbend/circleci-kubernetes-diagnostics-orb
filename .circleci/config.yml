@@ -75,7 +75,7 @@ workflows:
           name: trigger-integration-dev
           requires:
             - orb-tools/publish-dev
-          ssh-fingerprints: TODO
+          ssh-fingerprints: ca:c1:0e:8d:9c:fc:df:aa:c2:34:67:ba:ac:8c:0e:62
       - orb-tools/trigger-integration-workflow:
           filters:
             branches:
@@ -83,5 +83,5 @@ workflows:
           name: trigger-integration-master
           requires:
             - orb-tools/publish-dev
-          ssh-fingerprints: TODO
+          ssh-fingerprints: ca:c1:0e:8d:9c:fc:df:aa:c2:34:67:ba:ac:8c:0e:62
           tag: master
