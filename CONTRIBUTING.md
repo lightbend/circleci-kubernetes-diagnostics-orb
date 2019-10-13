@@ -26,9 +26,7 @@ make lint
 ### Pack
 
 The Orb configuration uses a destructured layout which then gets [packed][packing-a-config] together
-into a single configuration.
-
-To pack the configuration:
+into a single configuration. To pack the configuration:
 
 ```bash
 make pack
@@ -36,10 +34,19 @@ make pack
 
 ### Validate
 
-Before you can validate the configuration make sure that you have [packed](#pack) the configuration.
+You can validate the configuration for any errors:
 
 ```bash
 make validate
+```
+
+### Process
+
+You may want to resolve an Orb and it's dependencies to see how it would be expanded when you
+publish it to the registry:
+
+```bash
+make proces
 ```
 
 ## CI

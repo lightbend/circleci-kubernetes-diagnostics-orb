@@ -22,6 +22,10 @@ pack: $(orb)
 validate: $(orb)
 	circleci orb validate $(orb)
 
+.PHONY: process
+validate: $(orb)
+	circleci orb process $(orb)
+
 .PHONY: publish
 publish: $(orb)
 	@read -p "version = " version; \

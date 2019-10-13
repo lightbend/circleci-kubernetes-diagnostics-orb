@@ -39,14 +39,14 @@ parameters:
       An empty value will use the default namespace.
     type: string
   pod-template:
-    default: '
-      {{range $item := .items}}
-        {{range .status.containerStatuses}}
-          {{if not .ready}}
-            {{printf "%s\n" $item.metadata.name}}
-          {{end}}
-        {{end}}
-      {{end}}'
+    default: "\
+      {{range $item := .items}}\
+        {{range .status.containerStatuses}}\
+          {{if not .ready}}\
+            {{printf \"%s\\n\" $item.metadata.name}}\
+          {{end}}\
+        {{end}}\
+      {{end}}"
     description: |
       The go template which prints a newline separated list of pod names for which get the logs for.
 
