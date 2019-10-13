@@ -72,7 +72,7 @@ steps:
         if [ -n "${OUTPUT}" ]; then
           set -- "$@" "--output=${OUTPUT}"
         fi
-        RESOURCE="<< parameters.resource"
+        RESOURCE="<< parameters.resource >>"
         SELECTOR="<< parameters.selector >>"
         if [ -n "${SELECTOR}" ]; then
           set -- "$@" "--selector=${SELECTOR}"
