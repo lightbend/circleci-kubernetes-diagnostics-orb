@@ -10,7 +10,7 @@ For instructions on how to build and contribute then checkout the documentation 
 
 ## Maintenance
 
-This project is active, it is not supported under the (Lightbend subscription)[https://www.lightbend.com/subscription], and is maintained by the (Console Team)[https://github.com/orgs/lightbend/teams/console] at Lightbend.
+This project is active, it is not supported under the [Lightbend subscription](https://www.lightbend.com/subscription), and is maintained by the [Console Team](https://github.com/orgs/lightbend/teams/console) at Lightbend.
 
 ## License
 
